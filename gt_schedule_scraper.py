@@ -124,8 +124,12 @@ class _SectionParser:
 
     @staticmethod
     def __get_reg_start_date(detail_html):
+        reg_date_text = detail_html.find_next(text="Registration Dates: ").next_element.strip()
+        if reg_date_text == "No dates available":
+            return None
+
         # Extract date
-        reg_start_date_text = detail_html.find_next(text="Registration Dates: ").next_element.strip().split(" to ")[0]
+        reg_start_date_text = reg_date_text.split(" to ")[0]
         f = "%b %d, %Y"
         return datetime.datetime.strptime(reg_start_date_text, f).date()
 
@@ -133,8 +137,12 @@ class _SectionParser:
 
     @staticmethod
     def __get_reg_end_date(detail_html):
+        reg_date_text = detail_html.find_next(text="Registration Dates: ").next_element.strip()
+        if reg_date_text == "No dates available":
+            return None
+
         # Extract date
-        reg_end_date_text = detail_html.find_next(text="Registration Dates: ").next_element.strip().split(" to ")[1]
+        reg_end_date_text = reg_date_text.split(" to ")[1]
         f = "%b %d, %Y"
         return datetime.datetime.strptime(reg_end_date_text, f).date()
 
